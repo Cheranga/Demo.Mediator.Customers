@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Demo.Mediator.Customers.Api.Constants;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,7 +10,7 @@ namespace Demo.Mediator.Customers.Api.Validators
         {
             CascadeMode = CascadeMode.Stop;
         }
-        
+
         protected override bool PreValidate(ValidationContext<TModel> context, ValidationResult result)
         {
             var instance = context.InstanceToValidate;
@@ -20,7 +19,7 @@ namespace Demo.Mediator.Customers.Api.Validators
             {
                 return true;
             }
-            
+
             result.Errors.Add(new ValidationFailure("", ErrorMessages.InstanceIsNull)
             {
                 ErrorCode = ErrorCodes.InstanceIsNull

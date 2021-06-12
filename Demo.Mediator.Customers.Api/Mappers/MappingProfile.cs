@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using AutoMapper;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
@@ -13,7 +12,7 @@ namespace Demo.Mediator.Customers.Api.Mappers
     {
         public MappingProfile()
         {
-            CreateMap<GetCustomerByIdRequest, GetCustomerByIdQuery>().ForMember(x=>x.Id, x=> x.MapFrom(y=> y.CustomerId ));
+            CreateMap<GetCustomerByIdRequest, GetCustomerByIdQuery>().ForMember(x => x.Id, x => x.MapFrom(y => y.CustomerId));
             CreateMap<Customer, GetCustomerResponse>().ConvertUsing<CustomerToGetCustomerResponseMapper>();
             CreateMap<UpsertCustomerRequest, UpdateCustomerCommand>();
             CreateMap<UpsertCustomerRequest, CreateCustomerCommand>();

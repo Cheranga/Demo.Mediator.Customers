@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Demo.Mediator.Customers.Api.Core;
-using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
 

@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.Extensions;
@@ -9,13 +8,13 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.Models.Requests
 {
-    public class UpsertCustomerRequest : IRequest<Result>
+    public class UpsertCustomerRequest : CommandBase
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
     }
-    
+
     public class UpsertCustomerRequestHandler : IRequestHandler<UpsertCustomerRequest, Result>
     {
         private readonly IMapper _mapper;

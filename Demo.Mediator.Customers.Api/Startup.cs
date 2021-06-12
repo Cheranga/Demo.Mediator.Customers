@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Demo.Mediator.Customers.Api.Core;
+using Demo.Mediator.Customers.Api.DataAccess.Commands;
+using Demo.Mediator.Customers.Api.DataAccess.Queries;
 using Demo.Mediator.Customers.Api.Mappers;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
@@ -31,22 +37,19 @@ namespace Demo.Mediator.Customers.Api
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Demo.Mediator.Customers.Api", Version = "v1"}); });
 
-            RegisterMediators(services);
             RegisterValidators(services);
             RegisterMappers(services);
             RegisterServices(services);
             RegisterResponseGenerators(services);
+            RegisterMediators(services);
         }
 
         private void RegisterResponseGenerators(IServiceCollection services)
         {
-            services.AddSingleton<IResponseGenerator<GetCustomerByIdRequest, GetCustomerResponse>, GetCustomerByIdResponseGenerator>();
-            services.AddSingleton<IResponseGenerator<UpsertCustomerRequest>, UpsertCustomerResponseGenerator>();
-            
-            services.AddSingleton<IResponseGeneratorFactory, ResponseGeneratorFactory>(provider =>
-            {
-                return new ResponseGeneratorFactory(provider, provider.GetRequiredService<ILogger<ResponseGeneratorFactory>>());
-            });
+            services.AddScoped<IResponseGenerator<GetCustomerByIdRequest, GetCustomerResponse>, GetCustomerByIdResponseGenerator>();
+            services.AddScoped<IResponseGenerator<UpsertCustomerRequest>, UpsertCustomerResponseGenerator>();
+
+            services.AddScoped<IResponseGeneratorFactory, ResponseGeneratorFactory>(provider => { return new ResponseGeneratorFactory(provider, provider.GetRequiredService<ILogger<ResponseGeneratorFactory>>()); });
         }
 
         private void RegisterMediators(IServiceCollection services)
@@ -56,7 +59,48 @@ namespace Demo.Mediator.Customers.Api
                 typeof(Startup).Assembly
             };
 
-            services.AddMediatR(assemblies);
+            services.AddMediatR(assemblies, configuration => { configuration.AsScoped(); });
+
+            RegisterCommandsAndQueries(services);
+        }
+
+        private void RegisterCommandsAndQueries(IServiceCollection services)
+        {
+            var commandTypes = typeof(Startup).Assembly.GetTypes()
+                .Where(x => x.IsClass && x.BaseType == typeof(CommandBase)).ToList();
+
+            foreach (var commandType in commandTypes)
+            {
+                var sourceType = typeof(IPipelineBehavior<,>).MakeGenericType(commandType, typeof(Result));
+                var performanceImplementationType = typeof(CommandPerformanceBehaviour<>).MakeGenericType(commandType);
+                var validationImplementationType = typeof(CommandValidationBehaviour<>).MakeGenericType(commandType);
+
+                services.AddScoped(sourceType, performanceImplementationType);
+                services.AddScoped(sourceType, validationImplementationType);
+            }
+
+            var queryTypes = typeof(Startup).Assembly.GetTypes()
+                .Where(x => x.IsClass &&
+                            x.BaseType != null &&
+                            x.BaseType.IsGenericType &&
+                            x.BaseType.GetGenericTypeDefinition() == typeof(QueryBase<>))
+                .ToList();
+
+
+            foreach (var queryType in queryTypes)
+            {
+                var genericTypeArguments = queryType.BaseType.GetGenericArguments();
+
+                var sourceType = typeof(IPipelineBehavior<,>).MakeGenericType(queryType, typeof(Result<>).MakeGenericType(genericTypeArguments));
+
+                var parameterTypes = new List<Type>(new[] {queryType});
+                parameterTypes.AddRange(genericTypeArguments);
+                var performanceImplementationType = typeof(QueryPerformanceBehaviour<,>).MakeGenericType(parameterTypes.ToArray());
+                var validationImplementationType = typeof(QueryValidationBehaviour<,>).MakeGenericType(parameterTypes.ToArray());
+
+                services.AddScoped(sourceType, performanceImplementationType);
+                services.AddScoped(sourceType, validationImplementationType);
+            }
         }
 
         private void RegisterValidators(IServiceCollection services)
@@ -76,12 +120,12 @@ namespace Demo.Mediator.Customers.Api
                 typeof(MappingProfile).Assembly
             };
 
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(assemblies, ServiceLifetime.Scoped);
         }
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerService, CustomerService>();
         }
 
 

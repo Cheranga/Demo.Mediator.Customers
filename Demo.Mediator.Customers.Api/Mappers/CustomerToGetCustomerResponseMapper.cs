@@ -15,7 +15,7 @@ namespace Demo.Mediator.Customers.Api.Mappers
             {
                 return destination;
             }
-            
+
             destination ??= new GetCustomerResponse();
 
             var nameParty = source.Name?.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries)?.ToList();

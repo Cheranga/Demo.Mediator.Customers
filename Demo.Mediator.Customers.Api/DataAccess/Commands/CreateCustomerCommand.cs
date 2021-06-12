@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.DataAccess.Commands
 {
-    public class CreateCustomerCommand : IRequest<Result>
+    public class CreateCustomerCommand : CommandBase
     {
         public string Name { get; set; }
         public string Address { get; set; }
@@ -16,7 +16,7 @@ namespace Demo.Mediator.Customers.Api.DataAccess.Commands
     {
         public async Task<Result> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
             return Result.Success();
         }
     }
