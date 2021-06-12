@@ -1,4 +1,8 @@
+using Demo.Mediator.Customers.Api.Core;
+using Demo.Mediator.Customers.Api.DataAccess.Commands;
+using Demo.Mediator.Customers.Api.DataAccess.Queries;
 using Demo.Mediator.Customers.Api.Mappers;
+using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
 using Demo.Mediator.Customers.Api.ResponseGenerators;
@@ -31,19 +35,19 @@ namespace Demo.Mediator.Customers.Api
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Demo.Mediator.Customers.Api", Version = "v1"}); });
 
-            RegisterMediators(services);
             RegisterValidators(services);
             RegisterMappers(services);
             RegisterServices(services);
             RegisterResponseGenerators(services);
+            RegisterMediators(services);
         }
 
         private void RegisterResponseGenerators(IServiceCollection services)
         {
-            services.AddSingleton<IResponseGenerator<GetCustomerByIdRequest, GetCustomerResponse>, GetCustomerByIdResponseGenerator>();
-            services.AddSingleton<IResponseGenerator<UpsertCustomerRequest>, UpsertCustomerResponseGenerator>();
+            services.AddScoped<IResponseGenerator<GetCustomerByIdRequest, GetCustomerResponse>, GetCustomerByIdResponseGenerator>();
+            services.AddScoped<IResponseGenerator<UpsertCustomerRequest>, UpsertCustomerResponseGenerator>();
             
-            services.AddSingleton<IResponseGeneratorFactory, ResponseGeneratorFactory>(provider =>
+            services.AddScoped<IResponseGeneratorFactory, ResponseGeneratorFactory>(provider =>
             {
                 return new ResponseGeneratorFactory(provider, provider.GetRequiredService<ILogger<ResponseGeneratorFactory>>());
             });
@@ -56,7 +60,23 @@ namespace Demo.Mediator.Customers.Api
                 typeof(Startup).Assembly
             };
 
-            services.AddMediatR(assemblies);
+            services.AddMediatR(assemblies, configuration =>
+            {
+                configuration.AsScoped();
+            });
+
+            services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest,Result>), typeof(CommandPerformanceBehaviour<UpsertCustomerRequest>));
+            services.AddScoped(typeof(IPipelineBehavior<CreateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<CreateCustomerCommand>));
+            services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<UpdateCustomerCommand>));
+            services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdRequest, Result<GetCustomerResponse>>), typeof(QueryPerformanceBehaviour<GetCustomerByIdRequest, GetCustomerResponse>));
+            services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdQuery, Result<Customer>>), typeof(QueryPerformanceBehaviour<GetCustomerByIdQuery, Customer>));
+            
+            services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest, Result>), typeof(CommandValidationBehaviour<UpsertCustomerRequest>));
+            services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand, Result>), typeof(CommandValidationBehaviour<UpdateCustomerCommand>));
+            
+            
+            services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdRequest, Result<GetCustomerResponse>>), typeof(QueryValidationBehaviour<GetCustomerByIdRequest, GetCustomerResponse>));
+            services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdQuery, Result<Customer>>), typeof(QueryValidationBehaviour<GetCustomerByIdQuery, Customer>));
         }
 
         private void RegisterValidators(IServiceCollection services)
@@ -76,12 +96,12 @@ namespace Demo.Mediator.Customers.Api
                 typeof(MappingProfile).Assembly
             };
 
-            services.AddAutoMapper(assemblies);
+            services.AddAutoMapper(assemblies,ServiceLifetime.Scoped);
         }
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomerService, CustomerService>();
         }
 
 
