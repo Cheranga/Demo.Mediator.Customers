@@ -6,7 +6,12 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.DataAccess.Commands
 {
-    public class CreateCustomerCommand : IRequest<Result>
+    public abstract class CommandBase : IRequest<Result>
+    {
+        
+    }
+    
+    public class CreateCustomerCommand : CommandBase
     {
         public string Name { get; set; }
         public string Address { get; set; }

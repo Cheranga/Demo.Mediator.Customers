@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.DataAccess.Commands
 {
-    public class UpdateCustomerCommand : IRequest<Result>
+    public class UpdateCustomerCommand : CommandBase//IRequest<Result>
     {
         public string Id { get; set; }
         public string Name { get; set; }
