@@ -8,15 +8,16 @@ namespace Demo.Mediator.Customers.Api.Models.Responses
         public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
     }
+
     public class ErrorResponse
     {
-        public string ErrorCode { get; set; }
-        public string ErrorMessage { get; set; }
-        public List<Error> Errors { get; set; }
-
         public ErrorResponse()
         {
             Errors = new List<Error>();
         }
+
+        public string ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
+        public List<Error> Errors { get; set; }
     }
 }

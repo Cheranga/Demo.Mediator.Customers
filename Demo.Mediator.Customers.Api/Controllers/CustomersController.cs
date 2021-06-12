@@ -3,7 +3,6 @@ using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.ResponseGenerators;
 using Demo.Mediator.Customers.Api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Demo.Mediator.Customers.Api.Controllers
 {
@@ -21,13 +20,13 @@ namespace Demo.Mediator.Customers.Api.Controllers
         }
 
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCustomer([FromRoute]string customerId)
+        public async Task<IActionResult> GetCustomer([FromRoute] string customerId)
         {
             var request = new GetCustomerByIdRequest
             {
                 CustomerId = customerId
             };
-            
+
             var operation = await _customerService.GetCustomerAsync(request);
             var response = _responseGenerator.GenerateResponse(request, operation);
 

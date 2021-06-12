@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Mediator.Customers.Api.ResponseGenerators
 {
-    public class UpsertCustomerResponseGenerator: IResponseGenerator<UpsertCustomerRequest>
+    public class UpsertCustomerResponseGenerator : IResponseGenerator<UpsertCustomerRequest>
     {
         private readonly IMapper _mapper;
 
@@ -15,7 +15,7 @@ namespace Demo.Mediator.Customers.Api.ResponseGenerators
         {
             _mapper = mapper;
         }
-        
+
         public IActionResult GenerateResponse(UpsertCustomerRequest request, Result operation)
         {
             if (operation.Status)
@@ -23,7 +23,7 @@ namespace Demo.Mediator.Customers.Api.ResponseGenerators
                 return new OkResult();
             }
 
-            
+
             var errorResponse = _mapper.Map<ErrorResponse>(operation.ValidationResult);
             return new ObjectResult(errorResponse)
             {

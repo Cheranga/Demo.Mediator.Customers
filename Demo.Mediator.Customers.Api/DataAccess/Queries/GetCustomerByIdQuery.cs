@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Demo.Mediator.Customers.Api.Core;
@@ -8,7 +7,7 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.DataAccess.Queries
 {
-    public class GetCustomerByIdQuery : IRequest<Result<Customer>>
+    public class GetCustomerByIdQuery : QueryBase<Customer>
     {
         public string Id { get; set; }
     }
@@ -17,7 +16,7 @@ namespace Demo.Mediator.Customers.Api.DataAccess.Queries
     {
         public async Task<Result<Customer>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
 
             return Result<Customer>.Success(new Customer
             {

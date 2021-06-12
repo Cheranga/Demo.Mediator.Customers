@@ -1,23 +1,20 @@
-using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
-using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Responses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Demo.Mediator.Customers.Api.Models.Requests
 {
-    public class GetCustomerByIdRequest : IRequest<Result<GetCustomerResponse>>
+    public class GetCustomerByIdRequest : QueryBase<GetCustomerResponse>
     {
         public string CustomerId { get; set; }
     }
-    
+
     public class GetCustomerByIdRequestHandler : IRequestHandler<GetCustomerByIdRequest, Result<GetCustomerResponse>>
     {
         private readonly ILogger<GetCustomerByIdRequestHandler> _logger;

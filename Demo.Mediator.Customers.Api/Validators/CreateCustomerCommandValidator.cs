@@ -8,7 +8,7 @@ namespace Demo.Mediator.Customers.Api.Validators
         public CreateCustomerCommandValidator()
         {
             RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x=>x.Address).NotNull().NotEmpty();
+            RuleFor(x => x.Address).NotNull().NotEmpty();
         }
     }
 }

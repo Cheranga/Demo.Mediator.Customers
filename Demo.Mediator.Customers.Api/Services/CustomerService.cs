@@ -1,9 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Demo.Mediator.Customers.Api.Core;
-using Demo.Mediator.Customers.Api.DataAccess.Commands;
-using Demo.Mediator.Customers.Api.DataAccess.Queries;
-using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
 using MediatR;

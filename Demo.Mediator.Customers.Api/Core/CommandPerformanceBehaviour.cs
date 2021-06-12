@@ -14,7 +14,7 @@ namespace Demo.Mediator.Customers.Api.Core
         {
             _logger = logger;
         }
-        
+
         public async Task<Result> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Result> next)
         {
             _logger.LogInformation("Started handling {RequestType}", typeof(TRequest).Name);
@@ -23,7 +23,7 @@ namespace Demo.Mediator.Customers.Api.Core
             var operation = await next();
             stopWatch.Stop();
             _logger.LogInformation("Finished handling {RequestType}. Time taken {TimeTaken}ms", typeof(TRequest).Name, stopWatch.ElapsedMilliseconds);
-            
+
             return operation;
         }
     }

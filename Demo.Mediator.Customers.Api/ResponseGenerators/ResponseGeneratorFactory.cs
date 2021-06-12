@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.Core;
@@ -18,8 +17,8 @@ namespace Demo.Mediator.Customers.Api.ResponseGenerators
 
     public class ResponseGeneratorFactory : IResponseGeneratorFactory
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ResponseGeneratorFactory> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public ResponseGeneratorFactory(IServiceProvider serviceProvider, ILogger<ResponseGeneratorFactory> logger)
         {
@@ -62,7 +61,7 @@ namespace Demo.Mediator.Customers.Api.ResponseGenerators
 
             return new ObjectResult(errorResponse)
             {
-                StatusCode = (int) (HttpStatusCode.InternalServerError)
+                StatusCode = (int) HttpStatusCode.InternalServerError
             };
         }
     }

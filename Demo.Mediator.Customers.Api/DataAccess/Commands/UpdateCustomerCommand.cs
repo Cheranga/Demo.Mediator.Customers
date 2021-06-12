@@ -6,13 +6,13 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.DataAccess.Commands
 {
-    public class UpdateCustomerCommand : CommandBase//IRequest<Result>
+    public class UpdateCustomerCommand : CommandBase
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
     }
-    
+
     public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Result>
     {
         public async Task<Result> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)

@@ -9,8 +9,8 @@ namespace Demo.Mediator.Customers.Api.Core
 {
     public class QueryValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
     {
-        private readonly IValidator<TRequest> _validator;
         private readonly ILogger<QueryValidationBehaviour<TRequest, TResponse>> _logger;
+        private readonly IValidator<TRequest> _validator;
 
         public QueryValidationBehaviour(ILogger<QueryValidationBehaviour<TRequest, TResponse>> logger, IValidator<TRequest> validator = null)
         {
