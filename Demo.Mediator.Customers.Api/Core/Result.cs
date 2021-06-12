@@ -1,3 +1,4 @@
+using Demo.Mediator.Customers.Api.Extensions;
 using FluentValidation.Results;
 
 namespace Demo.Mediator.Customers.Api.Core
@@ -7,7 +8,7 @@ namespace Demo.Mediator.Customers.Api.Core
         public string ErrorCode { get; set; }
         public ValidationResult ValidationResult { get; set; }
 
-        public bool Status => string.IsNullOrEmpty(ErrorCode);
+        public bool Status => ErrorCode.IsEmpty();
 
         public static Result Failure(string errorCode, string errorMessage)
         {
@@ -41,7 +42,7 @@ namespace Demo.Mediator.Customers.Api.Core
         public ValidationResult ValidationResult { get; set; }
         public TData Data { get; set; }
 
-        public bool Status => string.IsNullOrEmpty(ErrorCode);
+        public bool Status => ErrorCode.IsEmpty();
 
         public static Result<TData> Failure(string errorCode, string errorMessage)
         {

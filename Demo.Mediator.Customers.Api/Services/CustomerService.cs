@@ -5,6 +5,7 @@ using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
 using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Requests;
+using Demo.Mediator.Customers.Api.Models.Responses;
 using MediatR;
 
 namespace Demo.Mediator.Customers.Api.Services
@@ -20,16 +21,14 @@ namespace Demo.Mediator.Customers.Api.Services
             _mapper = mapper;
         }
 
-        public Task<Result> CreateCustomerAsync(CreateCustomerRequest request)
+        public Task<Result> CreateCustomerAsync(UpsertCustomerRequest request)
         {
-            var command = _mapper.Map<CreateCustomerCommand>(request);
-            return _mediator.Send(command);
+            return _mediator.Send(request);
         }
 
-        public Task<Result<Customer>> GetCustomerAsync(GetCustomerByIdRequest request)
+        public Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByIdRequest request)
         {
-            var query = _mapper.Map<GetCustomerByIdQuery>(request);
-            return _mediator.Send(query);
+            return _mediator.Send(request);
         }
     }
 }

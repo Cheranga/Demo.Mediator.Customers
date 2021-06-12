@@ -21,8 +21,13 @@ namespace Demo.Mediator.Customers.Api.Controllers
         }
 
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCustomer([FromRoute] GetCustomerByIdRequest request)
+        public async Task<IActionResult> GetCustomer([FromRoute]string customerId)
         {
+            var request = new GetCustomerByIdRequest
+            {
+                CustomerId = customerId
+            };
+            
             var operation = await _customerService.GetCustomerAsync(request);
             var response = _responseGenerator.GenerateResponse(request, operation);
 
@@ -30,7 +35,7 @@ namespace Demo.Mediator.Customers.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request)
+        public async Task<IActionResult> CreateCustomer([FromBody] UpsertCustomerRequest request)
         {
             var operation = await _customerService.CreateCustomerAsync(request);
             var response = _responseGenerator.GenerateResponse(request, operation);
