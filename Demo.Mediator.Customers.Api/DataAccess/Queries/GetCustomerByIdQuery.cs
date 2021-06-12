@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Demo.Mediator.Customers.Api.Core;
@@ -14,9 +15,16 @@ namespace Demo.Mediator.Customers.Api.DataAccess.Queries
 
     public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, Result<Customer>>
     {
-        public Task<Result<Customer>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<Customer>> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            return Result<Customer>.Success(new Customer
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Name = "Cheranga Hatangala",
+                Address = "Melbourne"
+            });
         }
     }
 }
