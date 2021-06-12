@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Reflection.Emit;
 using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
@@ -65,18 +68,35 @@ namespace Demo.Mediator.Customers.Api
                 configuration.AsScoped();
             });
 
-            services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest,Result>), typeof(CommandPerformanceBehaviour<UpsertCustomerRequest>));
-            services.AddScoped(typeof(IPipelineBehavior<CreateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<CreateCustomerCommand>));
-            services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<UpdateCustomerCommand>));
+            Test(services);
+            // services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest,Result>), typeof(CommandPerformanceBehaviour<UpsertCustomerRequest>));
+            // services.AddScoped(typeof(IPipelineBehavior<CreateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<CreateCustomerCommand>));
+            // services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand,Result>), typeof(CommandPerformanceBehaviour<UpdateCustomerCommand>));
             services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdRequest, Result<GetCustomerResponse>>), typeof(QueryPerformanceBehaviour<GetCustomerByIdRequest, GetCustomerResponse>));
             services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdQuery, Result<Customer>>), typeof(QueryPerformanceBehaviour<GetCustomerByIdQuery, Customer>));
             
-            services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest, Result>), typeof(CommandValidationBehaviour<UpsertCustomerRequest>));
-            services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand, Result>), typeof(CommandValidationBehaviour<UpdateCustomerCommand>));
+            // services.AddScoped(typeof(IPipelineBehavior<UpsertCustomerRequest, Result>), typeof(CommandValidationBehaviour<UpsertCustomerRequest>));
+            // services.AddScoped(typeof(IPipelineBehavior<UpdateCustomerCommand, Result>), typeof(CommandValidationBehaviour<UpdateCustomerCommand>));
             
             
             services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdRequest, Result<GetCustomerResponse>>), typeof(QueryValidationBehaviour<GetCustomerByIdRequest, GetCustomerResponse>));
             services.AddScoped(typeof(IPipelineBehavior<GetCustomerByIdQuery, Result<Customer>>), typeof(QueryValidationBehaviour<GetCustomerByIdQuery, Customer>));
+        }
+
+        private void Test(IServiceCollection services)
+        {
+            var commandTypes = typeof(Startup).Assembly.GetTypes()
+                .Where(x => x.IsClass && x.BaseType == typeof(CommandBase)).ToList();
+
+            foreach (var commandType in commandTypes)
+            {
+                var sourceType = typeof(IPipelineBehavior<,>).MakeGenericType(commandType, typeof(Result));
+                var performanceImplementationType = typeof(CommandPerformanceBehaviour<>).MakeGenericType(commandType);
+                var validationImplementationType = typeof(CommandValidationBehaviour<>).MakeGenericType(commandType);
+
+                services.AddScoped(sourceType, performanceImplementationType);
+                services.AddScoped(sourceType, validationImplementationType);
+            }
         }
 
         private void RegisterValidators(IServiceCollection services)

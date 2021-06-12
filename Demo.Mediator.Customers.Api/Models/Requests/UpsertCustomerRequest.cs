@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Demo.Mediator.Customers.Api.Models.Requests
 {
-    public class UpsertCustomerRequest : IRequest<Result>
+    public class UpsertCustomerRequest : CommandBase
     {
         public string Id { get; set; }
         public string Name { get; set; }
