@@ -23,6 +23,11 @@ namespace Demo.Mediator.Customers.Api.Services
             return _mediator.Send(request);
         }
 
+        public Task<Result> DeleteCustomerAsync(DeleteCustomerRequest request)
+        {
+            return _mediator.Send(request);
+        }
+
         public Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByIdRequest request)
         {
             return _mediator.Send(request);
