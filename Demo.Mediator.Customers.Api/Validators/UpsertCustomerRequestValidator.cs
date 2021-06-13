@@ -9,9 +9,15 @@ namespace Demo.Mediator.Customers.Api.Validators
     {
         public UpsertCustomerRequestValidator()
         {
-            RuleFor(x => x.Name).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true).WithErrorCode(ErrorCodes.EmptyData);
-            RuleFor(x=>x.UserName).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true).WithErrorCode(ErrorCodes.EmptyData);
-            RuleFor(x => x.Address).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true).WithErrorCode(ErrorCodes.EmptyData);
+            RuleFor(x => new[] {x.Name, x.Address, x.UserName})
+                .AllAreRequired()
+                .WithErrorDetails(ErrorCodes.AllAreRequired, ErrorMessages.AllAreRequired)
+                .When(x=> x.Id.IsEmpty());
+            
+            RuleFor(x => new[] {x.Name, x.Address, x.UserName})
+                .AnyIsRequired()
+                .WithErrorDetails(ErrorCodes.AnyIsRequired, ErrorMessages.AnyIsRequired)
+                .When(x=> !x.Id.IsEmpty());
         }
     }
 }

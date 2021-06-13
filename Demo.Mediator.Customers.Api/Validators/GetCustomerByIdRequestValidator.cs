@@ -1,5 +1,6 @@
+using Demo.Mediator.Customers.Api.Constants;
+using Demo.Mediator.Customers.Api.Extensions;
 using Demo.Mediator.Customers.Api.Models.Requests;
-using FluentValidation;
 
 namespace Demo.Mediator.Customers.Api.Validators
 {
@@ -7,7 +8,7 @@ namespace Demo.Mediator.Customers.Api.Validators
     {
         public GetCustomerByIdRequestValidator()
         {
-            RuleFor(x => x.CustomerId).NotNull().NotEmpty();
+            RuleFor(x => x.CustomerId).IsRequired().WithErrorDetails(ErrorCodes.Required, ErrorMessages.Required);
         }
     }
 }

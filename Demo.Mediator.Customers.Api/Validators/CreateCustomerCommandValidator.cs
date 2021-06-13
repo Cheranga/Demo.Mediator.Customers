@@ -1,7 +1,6 @@
 using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.Extensions;
-using FluentValidation;
 
 namespace Demo.Mediator.Customers.Api.Validators
 {

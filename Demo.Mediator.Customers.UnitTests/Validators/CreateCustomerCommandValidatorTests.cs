@@ -1,4 +1,3 @@
-using System;
 using AutoFixture;
 using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
@@ -14,14 +13,14 @@ namespace Demo.Mediator.Customers.UnitTests
     {
         private readonly Fixture _fixture;
         private CreateCustomerCommand _command;
-        private CreateCustomerCommandValidator _validator;
         private ValidationResult _validationResult;
-        
+        private CreateCustomerCommandValidator _validator;
+
         public CreateCustomerCommandValidatorTests()
         {
             _fixture = new Fixture();
         }
-        
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -33,7 +32,7 @@ namespace Demo.Mediator.Customers.UnitTests
                 .Then(x => ThenMustFailWithNameValidationError())
                 .BDDfy();
         }
-        
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -50,7 +49,7 @@ namespace Demo.Mediator.Customers.UnitTests
         {
             _validator.ShouldHaveValidationErrorFor(x => x.Name, _command).WithErrorCode(ErrorCodes.Required).WithErrorMessage(ErrorMessages.Required);
         }
-        
+
         private void ThenMustFailWithAddressValidationError()
         {
             _validator.ShouldHaveValidationErrorFor(x => x.Address, _command).WithErrorCode(ErrorCodes.Required).WithErrorMessage(ErrorMessages.Required);
@@ -67,7 +66,7 @@ namespace Demo.Mediator.Customers.UnitTests
             _command = _fixture.Create<CreateCustomerCommand>();
             _command.Name = name;
         }
-        
+
         private void GivenAddressIsNotProvided(string address)
         {
             _validator = new CreateCustomerCommandValidator();
