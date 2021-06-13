@@ -1,4 +1,6 @@
+using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
+using Demo.Mediator.Customers.Api.Extensions;
 using FluentValidation;
 
 namespace Demo.Mediator.Customers.Api.Validators
@@ -7,8 +9,8 @@ namespace Demo.Mediator.Customers.Api.Validators
     {
         public CreateCustomerCommandValidator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Address).NotNull().NotEmpty();
+            RuleFor(x => x.Name).IsRequired().WithErrorDetails(ErrorCodes.Required, ErrorMessages.Required);
+            RuleFor(x => x.Address).IsRequired().WithErrorDetails(ErrorCodes.Required, ErrorMessages.Required);
         }
     }
 }

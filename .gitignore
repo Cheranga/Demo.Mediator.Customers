@@ -8,3 +8,9 @@ Demo.Mediator.Customers.Api/obj/Debug/net5.0/
 Demo.Mediator.Customers.Api/obj/
 
 Demo.Mediator.Customers.Api/Properties/
+
+Demo.Mediator.Customers.UnitTests/bin/Debug/net5.0-windows/
+
+*.user
+
+Demo.Mediator.Customers.UnitTests/obj/

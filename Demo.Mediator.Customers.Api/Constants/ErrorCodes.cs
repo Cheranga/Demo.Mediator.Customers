@@ -10,6 +10,7 @@ namespace Demo.Mediator.Customers.Api.Constants
         public const string CreateCustomerError = "CREATE_CUSTOMER_ERROR";
         public const string UpdateCustomerError = "UPDATE_CUSTOMER_ERROR";
         public const string EmptyData = "EMPTY_DATA";
+        public const string Required = "REQUIRED";
     }
 
     public class ErrorMessages
@@ -22,5 +23,6 @@ namespace Demo.Mediator.Customers.Api.Constants
         public const string CreateCustomerError = "error occurred when creating the customer";
         public const string UpdateCustomerError = "error occurred when updating the customer";
         public const string EmptyData = "data not available";
+        public const string Required = "this is required";
     }
 }
