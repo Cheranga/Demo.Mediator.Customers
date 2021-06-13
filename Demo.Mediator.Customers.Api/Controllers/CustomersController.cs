@@ -55,5 +55,14 @@ namespace Demo.Mediator.Customers.Api.Controllers
 
             return response;
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCustomer([FromBody] DeleteCustomerRequest request)
+        {
+            var operation = await _customerService.DeleteCustomerAsync(request);
+            var response = _responseGenerator.GenerateResponse(request, operation);
+
+            return response;
+        }
     }
 }

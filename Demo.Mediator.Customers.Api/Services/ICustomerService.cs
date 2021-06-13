@@ -8,6 +8,7 @@ namespace Demo.Mediator.Customers.Api.Services
     public interface ICustomerService
     {
         Task<Result> CreateCustomerAsync(UpsertCustomerRequest request);
+        Task<Result> DeleteCustomerAsync(DeleteCustomerRequest request);
         Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByIdRequest request);
         Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByUserNameRequest request);
     }
