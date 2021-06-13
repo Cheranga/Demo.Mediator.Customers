@@ -19,12 +19,26 @@ namespace Demo.Mediator.Customers.Api.Controllers
             _responseGenerator = responseGenerator;
         }
 
-        [HttpGet("{customerId}")]
+        [HttpGet("search/id/{customerId}")]
         public async Task<IActionResult> GetCustomer([FromRoute] string customerId)
         {
             var request = new GetCustomerByIdRequest
             {
                 CustomerId = customerId
+            };
+
+            var operation = await _customerService.GetCustomerAsync(request);
+            var response = _responseGenerator.GenerateResponse(request, operation);
+
+            return response;
+        }
+        
+        [HttpGet("search/username/{userName}")]
+        public async Task<IActionResult> GetCustomerByUserName([FromRoute] string userName)
+        {
+            var request = new GetCustomerByUserNameRequest
+            {
+                UserName = userName
             };
 
             var operation = await _customerService.GetCustomerAsync(request);

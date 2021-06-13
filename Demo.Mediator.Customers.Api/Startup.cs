@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.Internal;
 using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
@@ -31,7 +32,6 @@ namespace Demo.Mediator.Customers.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -46,8 +46,55 @@ namespace Demo.Mediator.Customers.Api
 
         private void RegisterResponseGenerators(IServiceCollection services)
         {
-            services.AddScoped<IResponseGenerator<GetCustomerByIdRequest, GetCustomerResponse>, GetCustomerByIdResponseGenerator>();
-            services.AddScoped<IResponseGenerator<UpsertCustomerRequest>, UpsertCustomerResponseGenerator>();
+            var typeList = typeof(Startup).Assembly.GetTypes()
+                .Where(x=>x.Name.EndsWith("responsegenerator", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var queryResponseGeneratorTypes = typeList.Select(x =>
+                {
+                    var interfaces = x.GetInterfaces().Where(y => y.GetGenericInterface(typeof(IResponseGenerator<,>)) != null).ToList();
+                    if (interfaces == null || !interfaces.Any())
+                    {
+                        return null;
+                    }
+
+                    return new
+                    {
+                        Type = x,
+                        Interface = interfaces.First()
+                    };
+                })
+                .Where(x => x != null)
+                .ToList();
+            
+            var commandResponseGeneratorTypes = typeList.Select(x =>
+                {
+                    var interfaces = x.GetInterfaces().Where(y => y.GetGenericInterface(typeof(IResponseGenerator<>)) != null).ToList();
+                    if (interfaces == null || !interfaces.Any())
+                    {
+                        return null;
+                    }
+
+                    return new
+                    {
+                        Type = x,
+                        Interface = interfaces.First()
+                    };
+                })
+                .Where(x => x != null)
+                .ToList();
+
+            foreach (var queryResponseGenerator in queryResponseGeneratorTypes)
+            {
+                var sourceType = typeof(IResponseGenerator<,>).MakeGenericType(queryResponseGenerator.Interface.GetGenericArguments());
+                services.AddScoped(sourceType, queryResponseGenerator.Type);
+            }
+            
+            foreach (var commandResponseGenerator in commandResponseGeneratorTypes)
+            {
+                var sourceType = typeof(IResponseGenerator<>).MakeGenericType(commandResponseGenerator.Interface.GetGenericArguments());
+                services.AddScoped(sourceType, commandResponseGenerator.Type);
+            }
 
             services.AddScoped<IResponseGeneratorFactory, ResponseGeneratorFactory>(provider => { return new ResponseGeneratorFactory(provider, provider.GetRequiredService<ILogger<ResponseGeneratorFactory>>()); });
         }
@@ -81,7 +128,6 @@ namespace Demo.Mediator.Customers.Api
 
             var queryTypes = typeof(Startup).Assembly.GetTypes()
                 .Where(x => x.IsClass &&
-                            x.BaseType != null &&
                             x.BaseType.IsGenericType &&
                             x.BaseType.GetGenericTypeDefinition() == typeof(QueryBase<>))
                 .ToList();

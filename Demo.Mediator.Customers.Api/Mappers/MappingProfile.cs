@@ -13,6 +13,7 @@ namespace Demo.Mediator.Customers.Api.Mappers
         public MappingProfile()
         {
             CreateMap<GetCustomerByIdRequest, GetCustomerByIdQuery>().ForMember(x => x.Id, x => x.MapFrom(y => y.CustomerId));
+            CreateMap<GetCustomerByUserNameRequest, GetCustomerByUserNameQuery>().ForMember(x => x.UserName, x => x.MapFrom(y => y.UserName));
             CreateMap<Customer, GetCustomerResponse>().ConvertUsing<CustomerToGetCustomerResponseMapper>();
             CreateMap<UpsertCustomerRequest, UpdateCustomerCommand>();
             CreateMap<UpsertCustomerRequest, CreateCustomerCommand>();

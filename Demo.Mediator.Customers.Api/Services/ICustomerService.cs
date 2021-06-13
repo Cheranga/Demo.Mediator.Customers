@@ -9,5 +9,6 @@ namespace Demo.Mediator.Customers.Api.Services
     {
         Task<Result> CreateCustomerAsync(UpsertCustomerRequest request);
         Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByIdRequest request);
+        Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByUserNameRequest request);
     }
 }

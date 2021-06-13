@@ -27,5 +27,10 @@ namespace Demo.Mediator.Customers.Api.Services
         {
             return _mediator.Send(request);
         }
+
+        public Task<Result<GetCustomerResponse>> GetCustomerAsync(GetCustomerByUserNameRequest request)
+        {
+            return _mediator.Send(request);
+        }
     }
 }
