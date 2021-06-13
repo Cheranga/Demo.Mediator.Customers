@@ -1,3 +1,4 @@
+using Demo.Mediator.Customers.Api.Extensions;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using FluentValidation;
 
@@ -7,8 +8,9 @@ namespace Demo.Mediator.Customers.Api.Validators
     {
         public UpsertCustomerRequestValidator()
         {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Address).NotNull().NotEmpty();
+            RuleFor(x => x.Name).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true);
+            RuleFor(x=>x.UserName).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true);
+            RuleFor(x => x.Address).Must((request, s) => request.Id.IsEmpty() ? !s.IsEmpty() : true);
         }
     }
 }

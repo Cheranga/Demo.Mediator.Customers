@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper.Internal;
+using Demo.Mediator.Customers.Api.Configs;
 using Demo.Mediator.Customers.Api.Core;
+using Demo.Mediator.Customers.Api.DataAccess;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
 using Demo.Mediator.Customers.Api.Mappers;
@@ -15,6 +17,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,6 +44,7 @@ namespace Demo.Mediator.Customers.Api
             RegisterMappers(services);
             RegisterServices(services);
             RegisterResponseGenerators(services);
+            RegisterDataAccess(services);
             RegisterMediators(services);
         }
 
@@ -172,6 +176,17 @@ namespace Demo.Mediator.Customers.Api
         private void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();
+        }
+
+        private void RegisterDataAccess(IServiceCollection services)
+        {
+            services.AddSingleton<ITableStorageFactory, StorageTableFactory>(provider =>
+            {
+                var storageConfig = Configuration.GetSection(nameof(StorageTableConfiguration)).Get<StorageTableConfiguration>();
+
+                var storageTableFactory = new StorageTableFactory(storageConfig);
+                return storageTableFactory;
+            });
         }
 
 

@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Demo.Mediator.Customers.Api.DataAccess.Models;
 using Demo.Mediator.Customers.Api.Models.Assets;
 using Demo.Mediator.Customers.Api.Models.Responses;
 
 namespace Demo.Mediator.Customers.Api.Mappers
 {
-    public class CustomerToGetCustomerResponseMapper : ITypeConverter<Customer, GetCustomerResponse>
+    public class CustomerToGetCustomerResponseMapper : ITypeConverter<CustomerDataModel, GetCustomerResponse>
     {
-        public GetCustomerResponse Convert(Customer source, GetCustomerResponse destination, ResolutionContext context)
+        public GetCustomerResponse Convert(CustomerDataModel source, GetCustomerResponse destination, ResolutionContext context)
         {
             if (source == null)
             {

@@ -7,9 +7,9 @@ namespace Demo.Mediator.Customers.Api.Validators
     {
         public UpdateCustomerCommandValidator()
         {
-            RuleFor(x => x.Id).NotNull().NotEmpty();
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Address).NotNull().NotEmpty();
+            // RuleFor(x => x.Id).NotNull().NotEmpty();
+            // RuleFor(x => x.Name).NotNull().NotEmpty();
+            // RuleFor(x => x.Address).NotNull().NotEmpty();
         }
     }
 }
