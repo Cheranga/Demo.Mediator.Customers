@@ -37,6 +37,7 @@ namespace Demo.Mediator.Customers.UnitTests
         
         [Theory]
         [InlineData("name", "", "")]
+        [InlineData("", "", "")]
         [InlineData(null, "username", null)]
         public void AnyOfTheFieldsIsRequiredWhenUpdating(string name, string userName, string address)
         {

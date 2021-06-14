@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Demo.Mediator.Customers.Api.Core;
+using Demo.Mediator.Customers.Api.Extensions;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.ResponseGenerators;
 using Demo.Mediator.Customers.Api.Services;
@@ -13,6 +15,7 @@ namespace Demo.Mediator.Customers.Api.Controllers
         private readonly ICustomerService _customerService;
         private readonly IResponseGeneratorFactory _responseGenerator;
 
+
         public CustomersController(ICustomerService customerService, IResponseGeneratorFactory responseGenerator)
         {
             _customerService = customerService;
@@ -21,7 +24,7 @@ namespace Demo.Mediator.Customers.Api.Controllers
 
         [HttpGet("search/id/{customerId}")]
         public async Task<IActionResult> GetCustomer([FromRoute] string customerId)
-        {
+        {   
             var request = new GetCustomerByIdRequest
             {
                 CustomerId = customerId
@@ -32,7 +35,7 @@ namespace Demo.Mediator.Customers.Api.Controllers
 
             return response;
         }
-        
+
         [HttpGet("search/username/{userName}")]
         public async Task<IActionResult> GetCustomerByUserName([FromRoute] string userName)
         {

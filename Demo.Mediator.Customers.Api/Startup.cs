@@ -7,6 +7,7 @@ using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
+using Demo.Mediator.Customers.Api.Extensions;
 using Demo.Mediator.Customers.Api.Mappers;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
@@ -176,6 +177,8 @@ namespace Demo.Mediator.Customers.Api
         private void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();
+            
+            services.RegisterDependencies(typeof(Startup).Assembly);
         }
 
         private void RegisterDataAccess(IServiceCollection services)
