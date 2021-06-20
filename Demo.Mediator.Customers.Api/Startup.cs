@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AutoMapper.Internal;
 using Demo.Mediator.Customers.Api.Configs;
 using Demo.Mediator.Customers.Api.Core;
@@ -113,11 +114,17 @@ namespace Demo.Mediator.Customers.Api
 
             services.AddMediatR(assemblies, configuration => { configuration.AsScoped(); });
 
-            RegisterCommandsAndQueries(services);
+            RegisterCommandsAndQueries(services, typeof(Startup).Assembly);
         }
 
-        private void RegisterCommandsAndQueries(IServiceCollection services)
+        protected virtual void RegisterCommandsAndQueries(IServiceCollection services, params Assembly[] assemblies)
         {
+            var assemblyList = assemblies?.ToList() ?? new List<Assembly>();
+            if (!assemblyList.Any())
+            {
+                return;
+            }
+            
             var commandTypes = typeof(Startup).Assembly.GetTypes()
                 .Where(x => x.IsClass && x.BaseType == typeof(CommandBase)).ToList();
 

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Mediator.Customers.Api
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Mediator.Customers.UnitTests", "Demo.Mediator.Customers.UnitTests\Demo.Mediator.Customers.UnitTests.csproj", "{0D878BF4-AB72-4DFA-9547-748E3F30F245}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Mediator.Customers.IntegrationTests", "Demo.Mediator.Customers.IntegrationTests\Demo.Mediator.Customers.IntegrationTests.csproj", "{734257AD-EFBC-4CD8-835C-A210A5029C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0D878BF4-AB72-4DFA-9547-748E3F30F245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D878BF4-AB72-4DFA-9547-748E3F30F245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D878BF4-AB72-4DFA-9547-748E3F30F245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734257AD-EFBC-4CD8-835C-A210A5029C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734257AD-EFBC-4CD8-835C-A210A5029C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734257AD-EFBC-4CD8-835C-A210A5029C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734257AD-EFBC-4CD8-835C-A210A5029C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

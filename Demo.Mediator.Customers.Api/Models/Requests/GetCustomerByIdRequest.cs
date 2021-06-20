@@ -36,6 +36,7 @@ namespace Demo.Mediator.Customers.Api.Models.Requests
             if (!operation.Status)
             {
                 _logger.LogError(operation.ErrorCode, operation.ValidationResult);
+                return Result<GetCustomerResponse>.Failure(operation.ErrorCode, operation.ValidationResult);
             }
 
             var customer = operation.Data;

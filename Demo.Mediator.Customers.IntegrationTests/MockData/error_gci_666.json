@@ -1,0 +1,15 @@
+{
+  "ErrorCode": "DataAccessError",
+  "ValidationResult": {
+    "IsValid": false,
+    "Errors": [
+      {
+        "PropertyName": "",
+        "ErrorMessage": "error occurred when accessing data",        
+        "ErrorCode": "DataAccessError"
+      }
+    ]
+  },
+  "Data": null,
+  "Status": false
+}
