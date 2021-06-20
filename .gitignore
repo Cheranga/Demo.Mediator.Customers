@@ -14,3 +14,9 @@ Demo.Mediator.Customers.UnitTests/bin/Debug/net5.0-windows/
 *.user
 
 Demo.Mediator.Customers.UnitTests/obj/
+
+Demo.Mediator.Customers.IntegrationTests/bin/Debug/net5.0/
+
+Demo.Mediator.Customers.IntegrationTests/obj/Debug/net5.0/
+
+Demo.Mediator.Customers.IntegrationTests/obj/

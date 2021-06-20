@@ -13,6 +13,7 @@ namespace Demo.Mediator.Customers.Api.Constants
         public const string Required = "REQUIRED";
         public const string AnyIsRequired = "ANY_OF_THESE_ARE_REQUIRED";
         public const string AllAreRequired = "ALL_OF_THESE_ARE_REQUIRED";
+        public const string DataAccessError = nameof(DataAccessError);
     }
 
     public class ErrorMessages
@@ -28,5 +29,6 @@ namespace Demo.Mediator.Customers.Api.Constants
         public const string Required = "this is required";
         public const string AnyIsRequired = "any of these are required";
         public const string AllAreRequired = "all of these are required";
+        public const string DataAccessError = "error occurred when accessing data";
     }
 }
