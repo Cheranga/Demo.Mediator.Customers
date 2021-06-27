@@ -30,5 +30,6 @@ namespace Demo.Mediator.Customers.Api.Constants
         public const string AnyIsRequired = "any of these are required";
         public const string AllAreRequired = "all of these are required";
         public const string DataAccessError = "error occurred when accessing data";
+        public const string UserNameIsRequired = "username is required";
     }
 }

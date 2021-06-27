@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using Demo.Mediator.Customers.Api.Constants;
 using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.Models.Requests;
 using Demo.Mediator.Customers.Api.Models.Responses;
@@ -23,15 +24,22 @@ namespace Demo.Mediator.Customers.Api.ResponseGenerators
                 return new OkObjectResult(operation.Data);
             }
 
-            if (operation.Data == null)
+            var errorResponse = _mapper.Map<ErrorResponse>(operation);
+            HttpStatusCode errorStatusCode;
+
+            switch (operation.ErrorCode)
             {
-                return new NotFoundResult();
+                case ErrorCodes.CustomerNotFound:
+                    errorStatusCode = HttpStatusCode.NotFound;
+                    break;
+                default:
+                    errorStatusCode = HttpStatusCode.UnprocessableEntity;
+                    break;
             }
 
-            var errorResponse = _mapper.Map<ErrorResponse>(operation.ValidationResult);
             return new ObjectResult(errorResponse)
             {
-                StatusCode = (int) HttpStatusCode.UnprocessableEntity
+                StatusCode = (int) errorStatusCode
             };
         }
     }

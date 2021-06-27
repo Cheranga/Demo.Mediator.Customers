@@ -7,7 +7,7 @@ namespace Demo.Mediator.Customers.Api.Extensions
     {
         public static IRuleBuilderOptions<T, string> IsRequired<T>(this IRuleBuilderInitial<T, string> ruleBuilderOptions)
         {
-            return ruleBuilderOptions.Must(x => !x.IsEmpty());
+            return ruleBuilderOptions.Must(x => !string.IsNullOrWhiteSpace(x?.Trim()));
         }
 
         public static IRuleBuilderOptions<T, object> WithErrorDetails<T>(this IRuleBuilderOptions<T, object> ruleBuilderOptions, string errorCode, string errorMessage)

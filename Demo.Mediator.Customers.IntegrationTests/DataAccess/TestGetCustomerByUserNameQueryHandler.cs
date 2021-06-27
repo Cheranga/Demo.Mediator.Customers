@@ -12,8 +12,8 @@ namespace Demo.Mediator.Customers.IntegrationTests.DataAccess
     {
         public async Task<Result<CustomerDataModel>> Handle(GetCustomerByUserNameQuery request, CancellationToken cancellationToken)
         {
-            var operation = await AssemblyResourceFileReader.GetFileContentAsync<Result<CustomerDataModel>>(request.UserName);
-            return operation;
+            var customerData = await AssemblyResourceFileReader.GetFileContentAsync<CustomerDataModel>(request.UserName);
+            return Result<CustomerDataModel>.Success(customerData);
         }
     }
 }

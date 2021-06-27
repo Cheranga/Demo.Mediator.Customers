@@ -4,7 +4,6 @@ namespace Demo.Mediator.Customers.Api.Models.Responses
 {
     public class Error
     {
-        public string Property { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
     }

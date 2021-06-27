@@ -1,4 +1,5 @@
 using AutoMapper;
+using Demo.Mediator.Customers.Api.Core;
 using Demo.Mediator.Customers.Api.DataAccess.Commands;
 using Demo.Mediator.Customers.Api.DataAccess.Models;
 using Demo.Mediator.Customers.Api.DataAccess.Queries;
@@ -24,7 +25,7 @@ namespace Demo.Mediator.Customers.Api.Mappers
             CreateMap<UpsertCustomerRequest, UpdateCustomerCommand>();
             CreateMap<UpsertCustomerRequest, CreateCustomerCommand>();
             CreateMap<UpsertCustomerRequest, GetCustomerByIdRequest>().ForMember(x => x.CustomerId, x => x.MapFrom(y => y.Id));
-            CreateMap<ValidationResult, ErrorResponse>().ConvertUsing<ErrorResponseMapper>();
+            CreateMap(typeof(Result<>), typeof(ErrorResponse)).ConvertUsing(typeof(ErrorResponseMapper<>));
         }
     }
 }
